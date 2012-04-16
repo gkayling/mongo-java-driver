@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bson.BSONObject;
+import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -281,6 +282,24 @@ public abstract class GridFSFile implements DBObject {
      */
     protected void setGridFS( GridFS fs ){
         _fs = fs;
+    }
+
+    /**
+     * Reverses the id associated with this file
+     */
+    public void reverseId(){
+        _id = new ObjectId(this.reverse(_id.toString()));
+    }
+
+    private static String reverse(String str) {
+        char[] c = str.toCharArray();
+        int l = c.length;
+        for(int i = 0; i < l/2; i++) {
+            char t = c[i];
+            c[i] = c[l-1-i];
+            c[l-1-i] = t;
+        }
+        return new String(c);
     }
 
     protected GridFS _fs = null;
